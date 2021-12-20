@@ -58,19 +58,6 @@ const App = () => {
       });
   }, [address]);
 
-  // This is the case where the user hasn't connected their wallet
-  // to your web app. Let them call connectWallet.
-  if (!address) {
-    return (
-      <div className="landing">
-        <h1>Welcome to SerendipityDAO</h1>
-        <button onClick={() => connectWallet("injected")} className="btn-hero">
-          Connect your wallet
-        </button>
-      </div>
-    );
-  }
-
   const mintNft = () => {
     setIsClaiming(true);
     // Call bundleDropModule.claim("0", 1) to mint nft to user's wallet.
@@ -91,15 +78,32 @@ const App = () => {
       );
     });
   };
+
+  // This is the case where the user hasn't connected their wallet
+  // to your web app. Let them call connectWallet.
+  if (!address) {
+    return (
+      <div className="landing">
+        <h1>Welcome to SerendipityDAO</h1>
+        <button onClick={() => connectWallet("injected")} className="btn-hero">
+          Connect your wallet
+        </button>
+      </div>
+    );
+  };
+
+  // Add this little piece!
+  if (hasClaimedNFT) {
+    return (
+      <div className="member-page">
+        <h1>🍪DAO Member Page</h1>
+        <p>Congratulations on being a member</p>
+      </div>
+    );
+  };
   
-  // This is the case where we have the user's address
-  // which means they've connected their wallet to our site!
   // Render mint nft screen.
-  return hasClaimedNFT ? (
-    <div className="landing">
-      <h1>👀 wallet connected, now what!</h1>
-    </div>
-  ) : (
+  return (
     <div className="mint-nft">
       <h1>Mint your free 🍪DAO Membership NFT</h1>
       <button
